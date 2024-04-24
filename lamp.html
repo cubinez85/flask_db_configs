@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	  <meta charset="UTF-8">
+    <title>lamp</title>
+
+    <link rel="stylesheet" href="css/lamp.css">
+
+    <style>
+    	h1 {
+    		color: green;
+    	}
+
+    	h2 {
+    		color: blue;
+    	}
+
+    	h3 {
+    		color: red;
+    	}
+
+
+    </style>
+</head>
+<body>
+
+<h1 align="center">Привет!</h1>
+
+<h2>Включи свет</h2>
+
+<h3 align="center">Когда будешь уходить - не забудь выключить!</h3>
+
+<button onclick="document.getElementById('myImage').src='static/images/pic_bulbon.gif'">Turn on the light</button>
+
+<img id="myImage" src="static/images/pic_bulboff.gif" style="width:100px">
+
+<button onclick="document.getElementById('myImage').src='static/images/pic_bulboff.gif'">Turn off the light</button>
+
+</body>
+</html>
