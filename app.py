@@ -1,25 +1,63 @@
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import create_engine
-from sqlalchemy import  Column, Integer, String
-from sqlalchemy.orm import DeclarativeBase
+from flask import Flask, render_template
+import mysql.connector
 
 app = Flask(__name__)
 
-mysql_database = 'mysql://cubinez85:123@localhost/testdb'
+db = mysql.connector.connect(
+   host="localhost",
+   user="cubinez85",
+   password="123",
+   database="testdb"
+)
 
-engine = create_engine(mysql_database)
+cursor = db.cursor()
 
-class Base(DeclarativeBase): pass
+@app.route('/')
+def index():
 
-class Person(Base):
-    __tablename__ = "people"
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(64), unique=True, index=True)
-    age = Column(String(128))
+    cursor.execute("select * from tree")
+    content = cursor.fetchall()
+    cursor.execute("select * from tree")
+    labels = cursor.fetchall()
+    labels = list(map(lambda x: x[0], cursor.description))
 
-Base.metadata.create_all(bind=engine)
+    return render_template('sqlite.html', labels=labels, content=content)
 
-if __name__ == "__main__":
-    create_db()
-    app.run(debug=True)
+@app.route('/sale')
+def sale():
+
+    cursor.execute("select * from tree where parent in (2, 5)")
+    content = cursor.fetchall()
+    cursor.execute("select * from tree")
+    labels = cursor.fetchall()
+    labels = list(map(lambda x: x[0], cursor.description))
+
+    return render_template('sqlite_sale.html', labels=labels, content=content)
+
+@app.route('/support')
+def support():
+
+    cursor.execute("select * from tree where parent in (3, 6)")
+    content = cursor.fetchall()
+    cursor.execute("select * from tree")
+    labels = cursor.fetchall()
+    labels = list(map(lambda x: x[0], cursor.description))
+
+    return render_template('sqlite_support.html', labels=labels, content=content)
+
+@app.route('/IT')
+def IT():
+
+    cursor.execute("select * from tree where parent in (4, 7)")
+    content = cursor.fetchall()
+    cursor.execute("select * from tree")
+    labels = cursor.fetchall()
+    labels = list(map(lambda x: x[0], cursor.description))
+
+    return render_template('sqlite_IT.html', labels=labels, content=content)
+
+
+
+if __name__ == '__main__':
+    app.run()
+
